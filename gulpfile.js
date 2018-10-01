@@ -144,7 +144,9 @@ gulp.task('restore-package', function (done) {
 
 gulp.task('strip-debug', function () {
   return gulp.src(['./node_modules/black/dist/black-es6-module.js'], {})
-    .pipe(preprocess())
+    .pipe(preprocess({
+      context: { HIDE_SPLASH_SCREEN: true }
+    }))
     .pipe(stripDebug())
     .pipe(gulp.dest('./node_modules/black/dist/gcc/'));
 });
@@ -167,7 +169,6 @@ gulp.task('compile-gcc', function () {
       extra_annotation_name: 'cat',
       jscomp_warning: 'newCheckTypes',
       use_types_for_optimization: true,
-      new_type_inf: true,
       process_common_js_modules: true,
       generate_exports: true,
       export_local_property_definitions: true,
