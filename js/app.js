@@ -9,7 +9,7 @@ export class App extends GameObject {
     super();
 
     // Initialize gravity for arcade physics
-    const arcade = Black.instance.getSystem(Arcade);
+    const arcade = /** @type {Arcade} */ (Black.instance.getSystem(Arcade));
     arcade.gravityY = 1400;
 
     // Propagate input events to children elements
@@ -43,11 +43,9 @@ export class App extends GameObject {
     this.addChild(this.currentGame);
   }
 
-  restartGame() {
-    
+  restartGame() {    
     // Clears previous game
     this.currentGame.removeFromParent();
-
     this.startGame();
   }
 }

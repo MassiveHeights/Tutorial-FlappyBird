@@ -4,8 +4,9 @@ import { TextField, Tween } from 'black';
 export class Score extends TextField {
   constructor() {
     super('0', 'Bungee', 0xffffff, 62);
+
     this.alpha = 0;
-    this.alignAnchor();
+    this.alignPivot();
 
     this.strokeThickness = 8;
     this.strokeColor = 0x000000;
@@ -27,13 +28,11 @@ export class Score extends TextField {
 
   show() {
     let fadeIn = new Tween({ alpha: 1 }, 0.3, { delay: 0.2 });
-
     this.addComponent(fadeIn);
   }
 
   hide() {
     let fadeOut = new Tween({ alpha: 0 }, 0.3);
-
     this.addComponent(fadeOut);
   }
 

@@ -4,11 +4,12 @@ import { TextField, Tween } from 'black';
 export class Tutorial extends TextField {
   constructor() {
     super('Tap to fly higher!', 'Bungee', 0xffffff, 52);
-    this.alignAnchor();
-  
+
+    this.alignPivot();
+
     this.strokeThickness = 8;
     this.strokeColor = 0x000000;
-  
+
     this.dropShadow = true;
     this.shadowColor = 0x000000;
     this.shadowDistanceX = 5;

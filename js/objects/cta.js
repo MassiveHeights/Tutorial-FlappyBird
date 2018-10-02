@@ -5,9 +5,18 @@ import { ScoreBoard } from './score-board';
 export class CTA extends DisplayObject {
   constructor() {
     super();
+
     this.touchable = true;
     this.alpha = 0;
+
+    /** @type {boolean} */
     this.shown = false;
+
+    /** @type {ScoreBoard|null} */
+    this.scoreBoard = null;
+
+    /** @type {Sprite|null} */
+    this.replayBtn = null;
   }
   
   onAdded() {
@@ -21,20 +30,21 @@ export class CTA extends DisplayObject {
     gameOverText.shadowDistanceX = 5;
     gameOverText.shadowDistanceY = 5;
 
-    gameOverText.alignAnchor();
+    gameOverText.alignPivotOffset();
     
     const scoreBoard = this.scoreBoard = new ScoreBoard();
     
     const replayBtn = this.replayBtn = new Sprite('btn_play');
     replayBtn.alpha = 0;
-    replayBtn.y = scoreBoard.height * 0.5 + 60;
+    replayBtn.x = -10;
+    replayBtn.y = scoreBoard.height * 0.5 + 90;
     replayBtn.touchable = true;
-    replayBtn.alignAnchor();
+    replayBtn.alignPivotOffset()
     
     this.add(scoreBoard, replayBtn, gameOverText);
 
-    this.x = this.stage.width * 0.5;
-    this.y = this.stage.height * 0.5;
+    this.x = this.stage.centerX;
+    this.y = this.stage.centerY;
   }
 
   show() {
@@ -59,13 +69,12 @@ export class CTA extends DisplayObject {
 
   hide() {
     let fadeOut = new Tween({ alpha: 0 }, 0.3);
-
-    this.add(fadeOut);
-
+    
     fadeOut.on('complete', () => {
-
-      // "~" means as "Bubbling" ( higher parents can receive this message, in our case is "app.js" )
+      // "~" stands for "bubbling" and all  parents will receive this message
       this.post('~restartGame');
     });
+
+    this.add(fadeOut);
   }
 }

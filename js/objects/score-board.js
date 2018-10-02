@@ -4,7 +4,14 @@ import { Sprite, TextField } from "black";
 export class ScoreBoard extends Sprite {
   constructor() {
     super('board');
-    this.alignAnchor();
+
+    this.alignPivot();
+
+    /** @type {TextField|null} */
+    this.currentScoreNumber = null;
+
+    /** @type {TextField|null} */
+    this.bestScoreNumber = null;
   }
 
   onAdded() {
@@ -19,13 +26,13 @@ export class ScoreBoard extends Sprite {
     const bestScoreNumber = this.bestScoreNumber = this.createText('0', 'Bungee', 0xFFFFFF, 40, bestScoreText.y + offset);
     bestScoreNumber.strokeThickness = 4;
     bestScoreNumber.strokeColor = 0x000000;
-    
+
     this.add(currentScoreText, currentScoreNumber, bestScoreText, bestScoreNumber);
   }
 
   createText(value, font, color, size, y) {
     const text = new TextField(value, font, color, size);
-    text.alignAnchor();
+    text.alignPivot();
     text.x = this.width * 0.5;
     text.y = y;
 

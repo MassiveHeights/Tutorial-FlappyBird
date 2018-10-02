@@ -16,10 +16,10 @@ const closureCompiler = compilerPackage.gulp(/* options */);
 const runSequence = require('run-sequence').use(gulp);
 const stripDebug = require('./__scripts__/strip-debug');
 const fs = require('fs');
+const replace = require('gulp-replace');
 
 require('babel-polyfill');
 
-let dev = false;
 const cfgBrowserify = {
   cache: {},
   packageCache: {},
@@ -73,7 +73,7 @@ function preparePackages() {
 }
 
 gulp.task('sheets', function () {
-  return gulp.src(['./sheets/*.*'])
+  return gulp.src(['./sheets/*.{png,jpg,json}'])
     .pipe(plumber())
     .pipe(gulp.dest('./dist/assets'))
     .pipe(browserSync.stream());
@@ -151,6 +151,14 @@ gulp.task('strip-debug', function () {
     .pipe(gulp.dest('./node_modules/black/dist/gcc/'));
 });
 
+gulp.task('trim-gcc', function () {
+  gulp.src(['./dist/code.js'])
+    .pipe(replace(/configurable:!0,/g, ' '))
+    .pipe(replace(/enumerable:!0,/g, ' '))
+    .pipe(replace(/writable:!0,/g, ' '))    
+    .pipe(gulp.dest('./dist/'));
+});
+
 gulp.task('compile-gcc', function () {
   return gulp.src(['./js/**/*.js'], {})
     .pipe(preprocess())
@@ -215,7 +223,7 @@ function bs() {
 gulp.task('watchify', function () {
   let cfg = {
     debug: true,
-    ignoreWatch: ['**/node_modules/**'],
+    //ignoreWatch: ['**/node_modules/**'],
     poll: true,
     awaitWriteFinish: true
   };
@@ -235,11 +243,11 @@ gulp.task('watchify', function () {
 });
 
 gulp.task('build:dev', function () {
-  return runSequence('clean', ['sheets', 'textures', 'spine', 'index', 'fonts', 'audio'], 'development-package', 'watchify', bs);
+  return runSequence('clean', ['sheets', 'textures', 'spine', 'index', 'fonts', 'audio'], 'development-package', 'watchify', 'watch-assets', bs);
 });
 
 gulp.task('build:prod', function () {
-  return runSequence('clean', ['sheets', 'textures', 'spine', 'index', 'fonts', 'audio'], 'production-package', 'strip-debug', 'compile-gcc', 'restore-package');
+  return runSequence('clean', ['sheets', 'textures', 'spine', 'index', 'fonts', 'audio'], 'production-package', 'compile-gcc', 'restore-package');
 });
 
 gulp.task('watch-assets', function () {

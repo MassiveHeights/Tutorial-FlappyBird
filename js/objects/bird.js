@@ -4,15 +4,30 @@ import { Sprite, AssetManager, AnimationController, RigidBody, BoxCollider, Vect
 export class Bird extends Sprite {
   constructor() {
     super('bird_1');
-    this.alignAnchor();
-  }
-  
-  onAdded() {
 
+    /** @type {boolean} */
+    this.enabled = true;
+
+    /** @type {number} */
+    this.prevY = 0;
+
+    /** @type {number} */
+    this.globalX = 0;
+
+    /** @type {RigidBody|null} */
+    this.rigidBody = null;
+
+    /** @type {AnimationController|null} */
+    this.anim = null;
+
+    this.alignPivot();
+  }
+
+  onAdded() {
     // Creates frame animation
     const anim = this.anim = new AnimationController();
 
-    // "*" - means that all textures this prefix "bird_" and suffix as number will be got ( bird_1, bird_2... )
+    // "*" - means that all textures with prefix "bird_" and suffix as number will be taken ( bird_1, bird_2... )
     anim.add('idle', AssetManager.default.getTextures('bird_*'), 10);
     anim.play('idle');
 
@@ -22,7 +37,7 @@ export class Bird extends Sprite {
     rigidBody.isStatic = true;
 
     // We can customize colliding size of rigid body by box collider 
-    // ( rigid bodies' colliding bounds default value is texture's bounds )
+    // TIP: default value of box collider is equal to texture's bounds 
     const collider = new BoxCollider(-this.width * 0.4, -this.height * 0.3, this.width * 0.8, this.height * 0.6);
 
     this.add(anim, rigidBody, collider);
@@ -33,7 +48,7 @@ export class Bird extends Sprite {
     this.prevY = this.y;
 
     // Our bird doesn't move, so we can calculate global x once
-    this.globalX = this.parent.localToGlobal(new Vector(this.x, 0)).x;
+    this.globalX = this.parent.localToGlobal(new Vector(this.x - (this.width * 0.5), 0)).x;
   }
 
   onGameStarted() {
@@ -45,6 +60,9 @@ export class Bird extends Sprite {
   }
 
   onUpdate() {
+    if (this.enabled === false)
+      return;
+
     this.rotation = MathEx.clamp(MathEx.angleBetween(this.x, this.prevY, this.x + 1, this.y), this.rotation - 0.5, this.rotation + 0.07);
     this.prevY = this.y;
   }
@@ -58,7 +76,7 @@ export class Bird extends Sprite {
   }
 
   offRotationCalculating() {
-    this.onUpdate = () => {};
+    this.enabled = false;
   }
 }
 
