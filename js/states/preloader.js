@@ -23,8 +23,6 @@ export class Preloader extends GameObject {
   }
 
   onAssetsLoaded() {
-    window['done'] = true;
-    
     this.removeFromParent();
   }
 }

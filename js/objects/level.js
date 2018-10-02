@@ -60,7 +60,7 @@ export class Level extends GameObject {
 
   spawnPipes() {
     // If we have free pipes ( what move out of screen ), get free. If haven't, create new pipes.
-    const pipes = this.freePipes.length ? this.freePipes.pop() : this.pipesContainer.addChild(new Pipes());
+    const pipes = /** @type {Pipes} */ (this.freePipes.length ? this.freePipes.pop() : this.pipesContainer.addChild(new Pipes()));
     pipes.reset();
 
     if (!this.currentApproachingPipes) {
@@ -72,7 +72,10 @@ export class Level extends GameObject {
 
     this.currentVisiblePipes.push(pipes);
   }
-
+  
+  /**
+   * @protected
+   */
   onUpdate() {
     if (this.enabled === false)
       return;

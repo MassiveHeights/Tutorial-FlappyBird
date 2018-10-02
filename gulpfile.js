@@ -247,7 +247,7 @@ gulp.task('build:dev', function () {
 });
 
 gulp.task('build:prod', function () {
-  return runSequence('clean', ['sheets', 'textures', 'spine', 'index', 'fonts', 'audio'], 'production-package', 'compile-gcc', 'restore-package');
+  return runSequence('clean', ['sheets', 'textures', 'spine', 'index', 'fonts', 'audio'], 'production-package', 'strip-debug', 'compile-gcc', 'restore-package', 'trim-gcc');
 });
 
 gulp.task('watch-assets', function () {

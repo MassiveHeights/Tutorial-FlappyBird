@@ -21,24 +21,11 @@ export class Pipes extends GameObject {
   }
 
   createPipe(scaleYSign = 1) {
-    const pipeTilingTexture = AssetManager.default.getTexture('pipe_tile');
-
     const pipe = new Pipe(scaleYSign);
     pipe.y = Pipes.DISTANCE_BETWEEN_PIPES * 0.5 * scaleYSign;
 
-    const tile = new Sprite('pipe_tile');
-    tile.scaleY *= scaleYSign;
-    tile.x = (pipe.width - tile.width) * 0.5;
-    tile.y = pipe.height;
-
-    tile.tiling = new TilingInfo(pipeTilingTexture.width, 650 * scaleYSign);
-
-    tile.rigidBody = tile.addComponent(new RigidBody());
-    tile.rigidBody.isStatic = true;
-
-    this.rigidBodies.push(pipe.rigidBody, tile.rigidBody);
-
-    pipe.addChild(tile);
+    //this.rigidBodies.push(pipe.pipeRigidBody, pipe.tileRigidBody);
+    this.rigidBodies.push(pipe.pipeRigidBody);
 
     this.addChild(pipe);
   }

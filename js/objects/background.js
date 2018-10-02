@@ -28,10 +28,11 @@ export class Background extends Sprite {
 
     // Scales background to whole screen
     this.scale = Math.max((this.stage.height - this.stage.bounds.y) / t.width, this.stage.width / t.height);
-    console.log(this.stage.getBounds());
-    
   }
 
+  /**
+   * @protected
+   */
   onUpdate() {
     if (this.enabled === false)
       return;

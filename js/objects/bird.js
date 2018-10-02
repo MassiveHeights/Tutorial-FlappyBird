@@ -59,6 +59,9 @@ export class Bird extends Sprite {
     this.anim.stop();
   }
 
+  /**
+   * @protected
+   */
   onUpdate() {
     if (this.enabled === false)
       return;

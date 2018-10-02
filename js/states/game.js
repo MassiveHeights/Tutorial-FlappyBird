@@ -42,7 +42,7 @@ export class Game extends GameObject {
     this.started = true;
 
     /** @type {Timer} */
-    this.timerToSpawnPipes = new Timer(GAME_SPEED * 0.4, 1, false);    
+    this.timerToSpawnPipes = new Timer(GAME_SPEED * 0.4, 1, false);
   }
 
   onAdded() {
@@ -89,9 +89,12 @@ export class Game extends GameObject {
 
     MasterAudio.play('sfx_hit', 'master', 0.5);
   }
-
+  
+  /**
+   * @protected
+   */
   onUpdate() {
-    const arcade = Black.instance.getSystem(Arcade);
+    const arcade = /** @type {Arcade} */ (Black.instance.getSystem(Arcade));
     const groundBody = this.level.ground.rigidBody;
     const birdBody = this.bird.rigidBody;
 
