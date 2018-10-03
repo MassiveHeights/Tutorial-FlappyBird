@@ -1,4 +1,4 @@
-# Flappy Bird Tutorial
+# Flappy Bird Tutorial (BETA)
 Simple Flappy Bird game build on Black Engine. The goal of this sample game is to show how to use Black Vector Graphics in your own projects.
 
 # Size and performance
